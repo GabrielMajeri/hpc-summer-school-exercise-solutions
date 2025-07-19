@@ -1,16 +1,7 @@
-import math
-from typing import cast
 from mpi4py import MPI
 
+world_size = MPI.COMM_WORLD.size
 
-comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
-assert comm.Get_size() == 1, "This example should be run with exactly one node and one task"
+world_rank = MPI.COMM_WORLD.rank
 
-print("Hello from rank", rank)
-
-data = math.pi
-
-response = cast(float, comm.sendrecv(data, 0))
-
-print("I sent", data, "and I received back", response, "from myself")
+print(f"Hello world, from rank {world_rank} out of {world_size} processes")
