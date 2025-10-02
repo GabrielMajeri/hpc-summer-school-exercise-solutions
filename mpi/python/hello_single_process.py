@@ -5,7 +5,9 @@ from mpi4py import MPI
 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
-assert comm.Get_size() == 1, "This example should be run with exactly one node and one task"
+assert comm.Get_size() == 1, (
+    "This example should be run with exactly one node and one task "
+)
 
 print("Hello from rank", rank)
 
