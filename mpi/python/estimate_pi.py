@@ -3,10 +3,7 @@
 with work distributed across multiple processes, using MPI.
 """
 
-from typing import cast
-
 import numpy as np
-import numpy.typing as npt
 from mpi4py import MPI
 
 communicator = MPI.COMM_WORLD
@@ -45,14 +42,15 @@ integration_interval = np.linspace(
 # Sanity check, to make sure that `dx` is respected
 assert np.allclose(dx, np.diff(integration_interval))
 
-# Trapezoidal rule
-f_x = 1 / (1 + integration_interval**2)
-partial_result = dx / 2.0 * (f_x[0] + 2 * np.sum(f_x[1:-2], dtype=np.float64) + f_x[-1])
+midpoints = integration_interval + dx / 2
 
-result = communicator.gather(partial_result, root=0)
+# Midpoint rule
+f_x = 4 / (1 + midpoints**2)
+partial_result = np.sum(dx * f_x)
+
+result = communicator.reduce(partial_result, op=MPI.SUM, root=0)
 if rank == 0:
-    result = cast(list[npt.NDArray[np.float64]], result)
-    result = 4 * np.sum(result)
+    assert result is not None
     print("Estimated value of pi:", result)
     print("True(r) value:", np.pi)
 
