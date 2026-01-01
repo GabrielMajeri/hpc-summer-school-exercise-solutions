@@ -79,7 +79,7 @@ void matrix_free(SquareMatrix *A)
 
 int main()
 {
-    const int dimension = 6;
+    const int dimension = 512;
 
     SquareMatrix A, B;
     matrix_initialize(&A, dimension);
