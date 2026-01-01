@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     int row_end_index = min(row_start_index + block_size, matrix_size);
 
     const int data_size = block_size * matrix_size;
-    double *data = calloc(sizeof(double), data_size);
+    double *data = calloc(data_size, sizeof(double));
     if (data == NULL)
     {
         printf("Process #%d failed to allocate memory for storing matrix block\n", rank);
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     if (rank == root)
     {
         int matrix_num_elements = matrix_size * matrix_size;
-        double *matrix = calloc(sizeof(double), matrix_num_elements);
+        double *matrix = calloc(matrix_num_elements, sizeof(double));
         if (matrix == NULL)
         {
             printf("Root process (rank %d) failed to allocate memory for storing final assembled matrix\n", root);
